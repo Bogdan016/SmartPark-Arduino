@@ -191,14 +191,41 @@ const unsigned char bitmap_unit_cm [] PROGMEM = {
 	0xdb, 0x40, 0xb6, 0xdb, 0x40, 0xbe, 0xdb, 0x40, 0x80, 0x00, 0x40, 0xe0, 0x01, 0xc0
 };
 
-#define sensor_01_ECHO_PIN 2
-#define sensor_01_TRIG_PIN 3
+
+
+/*
+  Fontname: ProjectDigits
+  Copyright: Created with Fony 1.4.7
+  Capital A Height: 0, '1' Height: 6
+  Calculated Max Values w= 6 h= 6 x= 2 y= 0 dx= 9 dy= 0 ascent= 0 len= 6
+  Font Bounding box     w= 9 h= 5 x= 0 y=-6
+  Calculated Min Values           x= 0 y=-6 dx= 0 dy= 0
+  Pure Font   ascent = 6 descent= 0
+  X Font      ascent = 6 descent= 0
+  Max Font    ascent = 0 descent=-6
+*/
+
+const u8g_fntpgm_uint8_t ProjectDigits[137] U8G_FONT_SECTION("ProjectDigits") = {
+  0,9,5,0,250,6,0,0,0,0,48,57,0,0,250,6,
+  0,5,6,6,9,2,250,248,216,216,216,216,248,4,6,6,
+  9,2,250,224,96,96,96,96,240,5,6,6,9,0,250,248,
+  24,120,192,192,248,6,6,6,9,0,250,252,12,252,12,204,
+  252,5,6,6,9,0,250,56,120,216,248,24,24,6,6,6,
+  9,0,250,252,192,252,12,12,252,5,6,6,9,0,250,248,
+  192,248,216,216,248,5,6,6,9,0,250,248,24,24,24,24,
+  24,5,6,6,9,0,250,248,216,248,216,216,248,5,6,6,
+  9,0,250,248,216,216,248,24,248};
+
+
+
+#define sensor_01_ECHO_PIN 6
+#define sensor_01_TRIG_PIN 7
 
 #define sensor_02_ECHO_PIN 4
 #define sensor_02_TRIG_PIN 5
 
-#define sensor_03_ECHO_PIN 6
-#define sensor_03_TRIG_PIN 7
+#define sensor_03_ECHO_PIN 2
+#define sensor_03_TRIG_PIN 3
 
 #define nrSensors 3
 
@@ -206,12 +233,34 @@ struct sensor_data{
     int echo_pin;
     int trig_pin;
     int measured_distance_cm;
+		int label_posX;
+		int label_posY;
+		int label_width;
 };
+
+char buffer[10];
 
 struct sensor_data sensor[nrSensors];
 
+int min_dist = 10; 	// distanta minima in cm
+int max_dist = 100; // distanta maxima in cm
+
+int dist_step_1;	//distance for the first tile ( 4 tiles for each sensor)
+int dist_step_2;	//distance for the 2nd tile
+int dist_step_3;  //distance for the 3rd tile
+int dist_step_4;  //distance for the 4th tile
+
+
+
 void setup() {
 
+dist_step_1 = 10;
+dist_step_2 = 25;
+dist_step_3 = 50;
+dist_step_4 = 100;
+
+
+//initialize pins for sensors
   sensor[0].echo_pin = sensor_01_ECHO_PIN;
   sensor[0].trig_pin = sensor_01_TRIG_PIN;
 
@@ -230,7 +279,19 @@ void setup() {
   pinMode(sensor[2].trig_pin, OUTPUT);
   pinMode(sensor[2].echo_pin, INPUT);
 
-  u8g.setFont(u8g_font_tpssb);
+
+	sensor[0].label_posX = 30;
+	sensor[0].label_posY = 58;
+
+	sensor[1].label_posX = 67;
+	sensor[1].label_posY = 58;
+
+	sensor[2].label_posX = 100;
+	sensor[2].label_posY = 58;
+
+
+
+  u8g.setFont(ProjectDigits);
   u8g.setColorIndex(1);
 
   Serial.begin(115200);
@@ -247,51 +308,41 @@ void loop() {
    sensor[i].measured_distance_cm = pulseIn(sensor[i].echo_pin, HIGH);
    sensor[i].measured_distance_cm = round(sensor[i].measured_distance_cm * 0.0343/2.0);
 
-   Serial.print("Sensor ");
-   Serial.print(i);
-   Serial.print("  ");
-   Serial.print(sensor[i].measured_distance_cm);
-   Serial.println();
-   Serial.println();
+	itoa(sensor[i].measured_distance_cm, buffer, 10);
+	sensor[i].label_width = u8g.getStrWidth(buffer);
   }
 
-delay(1000);
 
   u8g.firstPage();
   do {
-    u8g.drawBitmapP(45, 0, 40/8, 20, bitmap_car_image);
-    u8g.drawBitmapP(1, 2, 24/8, 10, bitmap_unit_cm);
-    u8g.drawBitmapP(103, 2, 24/8, 10, bitmap_sound);
+    u8g.drawBitmapP(45, 0, 40/8, 20, bitmap_car_image); // car image on top of the display
+    u8g.drawBitmapP(1, 2, 24/8, 10, bitmap_unit_cm);		// sound on indicator 
+    u8g.drawBitmapP(103, 2, 24/8, 10, bitmap_sound);    //cm unit indicator
 
-    u8g.drawBitmapP(26, 17, 32/8, 14, bitmap_sensor_01_a_off);
-    u8g.drawBitmapP(23, 25, 32/8, 16, bitmap_sensor_01_b_off);
-    u8g.drawBitmapP(20, 34, 32/8, 17, bitmap_sensor_01_c_off);
-    u8g.drawBitmapP(18, 43, 32/8, 18, bitmap_sensor_01_d_off);
 
-    u8g.drawBitmapP(53, 23, 24/8, 9, bitmap_sensor_02_a_off);
-    u8g.drawBitmapP(49, 33, 32/8, 9, bitmap_sensor_02_b_off);
-    u8g.drawBitmapP(49, 42, 32/8, 10, bitmap_sensor_02_c_off);
-    u8g.drawBitmapP(45, 52, 40/8, 10, bitmap_sensor_02_d_off);
+    u8g.drawBitmapP(26, 17, 32/8, 14, sensor[0].measured_distance_cm > dist_step_1 ? bitmap_sensor_01_a_on : bitmap_sensor_01_a_off);
+    u8g.drawBitmapP(23, 25, 32/8, 16, sensor[0].measured_distance_cm > dist_step_2 ? bitmap_sensor_01_b_on : bitmap_sensor_01_b_off);
+    u8g.drawBitmapP(20, 34, 32/8, 17, sensor[0].measured_distance_cm > dist_step_3 ? bitmap_sensor_01_c_on : bitmap_sensor_01_c_off);
+    u8g.drawBitmapP(18, 43, 32/8, 18, sensor[0].measured_distance_cm > dist_step_4 ? bitmap_sensor_01_d_on : bitmap_sensor_01_d_off);
 
-    u8g.drawBitmapP(76, 17, 32/8, 14, bitmap_sensor_03_a_off);
-    u8g.drawBitmapP(78, 25, 32/8, 16, bitmap_sensor_03_b_off);
-    u8g.drawBitmapP(79, 34, 32/8, 17, bitmap_sensor_03_c_off);
-    u8g.drawBitmapP(82, 43, 32/8, 18, bitmap_sensor_03_d_off);
+    u8g.drawBitmapP(53, 23, 24/8, 9, sensor[1].measured_distance_cm > dist_step_1 ? bitmap_sensor_02_a_on : bitmap_sensor_02_a_off);
+    u8g.drawBitmapP(49, 33, 32/8, 9, sensor[1].measured_distance_cm > dist_step_2 ? bitmap_sensor_02_b_on : bitmap_sensor_02_b_off);
+    u8g.drawBitmapP(49, 42, 32/8, 10, sensor[1].measured_distance_cm > dist_step_3 ? bitmap_sensor_02_c_on : bitmap_sensor_02_c_off);
+    u8g.drawBitmapP(45, 52, 40/8, 10, sensor[1].measured_distance_cm > dist_step_4 ? bitmap_sensor_02_d_on : bitmap_sensor_02_d_off);
 
-    u8g.drawBitmapP(26, 17, 32/8, 14, bitmap_sensor_01_a_on);
-    u8g.drawBitmapP(23, 25, 32/8, 16, bitmap_sensor_01_b_on);
-    u8g.drawBitmapP(20, 34, 32/8, 17, bitmap_sensor_01_c_on);
-    u8g.drawBitmapP(18, 43, 32/8, 18, bitmap_sensor_01_d_on);
+    u8g.drawBitmapP(76, 17, 32/8, 14, sensor[2].measured_distance_cm > dist_step_1 ? bitmap_sensor_03_a_on : bitmap_sensor_03_a_off);
+    u8g.drawBitmapP(78, 25, 32/8, 16, sensor[2].measured_distance_cm > dist_step_2 ? bitmap_sensor_03_b_on : bitmap_sensor_03_b_off);
+    u8g.drawBitmapP(79, 34, 32/8, 17, sensor[2].measured_distance_cm > dist_step_3 ? bitmap_sensor_03_c_on : bitmap_sensor_03_c_off);
+    u8g.drawBitmapP(82, 43, 32/8, 18, sensor[2].measured_distance_cm > dist_step_4 ? bitmap_sensor_03_d_on : bitmap_sensor_03_d_off);
 
-    u8g.drawBitmapP(53, 23, 24/8, 9, bitmap_sensor_02_a_on);
-    u8g.drawBitmapP(49, 33, 32/8, 9, bitmap_sensor_02_b_on);
-    u8g.drawBitmapP(49, 42, 32/8, 10, bitmap_sensor_02_c_on);
-    u8g.drawBitmapP(45, 52, 40/8, 10, bitmap_sensor_02_d_on);
+	for(int i=0; i<nrSensors; i++){
+		u8g.setColorIndex(0);
+		u8g.drawBox((sensor[i].label_posX - sensor[i].label_width /2) - 2,sensor[i].label_posY - 4,sensor[i].label_width,8);
+		itoa(sensor[i].measured_distance_cm, buffer, 10);
+		u8g.setColorIndex(1);
+		u8g.drawStr(sensor[i].label_posX - sensor[i].label_width /2, sensor[i].label_posY - 3, buffer);
+	}
 
-    u8g.drawBitmapP(76, 17, 32/8, 14, bitmap_sensor_03_a_on);
-    u8g.drawBitmapP(78, 25, 32/8, 16, bitmap_sensor_03_b_on);
-    u8g.drawBitmapP(79, 34, 32/8, 17, bitmap_sensor_03_c_on);
-    u8g.drawBitmapP(82, 43, 32/8, 18, bitmap_sensor_03_d_on);
 
 
   } while ( u8g.nextPage() );
