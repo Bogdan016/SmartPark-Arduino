@@ -1,7 +1,7 @@
 # Intelligent parking system
 
 ## Wokwi link:
-[Intelligent parking system](https://wokwi.com/projects/384735044985188353)
+[Intelligent parking system on Wokwi](https://wokwi.com/projects/384735044985188353)
 
 ## Table of Contents
 1. Introduction
