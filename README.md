@@ -43,7 +43,7 @@ I also presented the project for one of my uni class so i had an ideea to add a 
 
 Also i really wanted to share this design i created: 
 ![Project initial design](images/img01.png)
-
+![Project image](images/ProjectImage.JPG)
 
 ## Acknowledgments
 
