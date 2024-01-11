@@ -21,6 +21,10 @@ The display shows a car image, unit indicator, sound indicators, and sensor read
 I’ve also included a buzzer that provides auditory feedback based on the measured distances. 
 I can toggle the sound on and off using a button. The code for my project is well-structured and organized, making it easy for me to manage and update.
 
+## Project Demo
+
+![Display Image](images/ProjectDemo.gif)
+
 ## Components
 - Arduino Uno
 - Ultrasonic Sensors
@@ -30,10 +34,6 @@ I can toggle the sound on and off using a button. The code for my project is wel
 
 ## Circuit Diagram
 ![Circuit Diagram](images/CircuitDiagram.png)
-
-## Project Demo
-
-https://github.com/Bogdan016/Intelligent-Parking-System/blob/main/images/ProjectDemo2.mov
 
 ## Display Image
 
@@ -47,7 +47,7 @@ I also presented the project for one of my uni class so i had an ideea to add a 
 
 Also i really wanted to share this design i created: 
 ![Project initial design](images/img01.png)
-![Project image](images/ProjectImage.JPG)
+
 
 ## Acknowledgments
 
