@@ -1,59 +1,62 @@
-# Intelligent parking system
 
-## Wokwi link:
-[Intelligent parking system on Wokwi](https://wokwi.com/projects/384735044985188353)
 
-## Table of Contents
-1. Introduction
-2. Description
-3. Components
-4. Circuit Diagram
-5. Conclusion and personal observations
-6. Acknowledgments
+<br />
+<div align="center">
+  <a href="https://github.com/Bogdan016/Arduino-Intelligent-Parking-System">
+    <img src="images/img01.png" alt="Logo" width="150" >
+  </a>
 
-## Introduction
-This project involves the development of a reverse parking assistance system using Arduino and ultrasonic sensors. 
-The system aims to measure and display the distance to obstacles behind the vehicle, assisting drivers during the parking process.
+  <h3 align="center">SmartPark</h3>
 
-## Description
-In my project, I use an OLED display and three ultrasonic sensors to measure distances. 
-The display shows a car image, unit indicator, sound indicators, and sensor readings. 
-I’ve also included a buzzer that provides auditory feedback based on the measured distances. 
-I can toggle the sound on and off using a button. The code for my project is well-structured and organized, making it easy for me to manage and update.
+  <p align="center">
+    <br />
+    <a href="https://github.com/Bogdan016/Arduino-Intelligent-Parking-System"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/Bogdan016/Arduino-Intelligent-Parking-System/blob/main/images/ProjectDemo.gif">View Demo</a>
+    ·
+    <a href="https://github.com/Bogdan016/Arduino-Intelligent-Parking-System/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Report Bug</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Request Feature</a>
+  </p>
+</div>
 
-## Project Demo
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-![Display Image](images/ProjectDemo.gif)
 
-## Components
-- Arduino Uno
-- Ultrasonic Sensors
-- OLED Display
-- Buzzer
-- Button
+## About The Project
 
-## Circuit Diagram
-![Circuit Diagram](images/CircuitDiagram.png)
+<div align="center">
+  
+  ![Display Image](images/ProjectDemo.gif)
 
-## Display Image
+</div>
 
-![Display Image](images/img02.png)
+  This project is dedicated to the development of a reverse parking assistance system, designed to simplify the parking process by using Arduino technology combined with ultrasonic sensors. 
+It accurately measures and displays the distance to obstacles located behind the vehicle, enhancing safety and efficiency for drivers.
 
-## Conclusion and personal observations
+Technical Details:
 
-This project was the first arduino project i worked on. 
-I had fun and ocassional frustration, I learned a lot about hardware, arduino and sensors. 
-I also presented the project for one of my uni class so i had an ideea to add a lego "car" to make it more visually appealing.
-
-Also i really wanted to share this design i created: 
-![Project initial design](images/img01.png)
+* Microcontroller: Arduino Uno is used as the control unit for processing sensor data and managing the display output.
+* Sensors: Three ultrasonic sensors provide spatial data by detecting objects in the vehicle’s path. The distances measured by these sensors are used to determine proximity to obstacles.
+* Display: An OLED display presents real-time information in a user-friendly format, including a graphical representation of a car, distance measurements in units, and sound status indicators.
+* Auditory Feedback: A buzzer system is integrated to offer auditory alerts. These alerts vary in frequency based on the proximity to obstacles, with the ability to toggle the sound on or off via a user-controlled button.
 
 
 ## Acknowledgments
 
-This project was inspired by and benefited from the following resources:
+This project would not have been possible without the contributions and resources from the following sources:
 
-- Wokwi - [https://wokwi.com/]
-- Arduino - [https://www.arduino.cc/]
-- YouTube Video - [https://www.youtube.com/watch?v=gg08H-6Z1Lo]
+- **Wokwi Simulator**: For providing the simulation environment used to develop and test the parking system. [View project on Wokwi](https://wokwi.com/projects/384735044985188353).
+- **Arduino**: For the essential Arduino libraries and hardware support. [Visit Arduino](https://www.arduino.cc/).
+- **YouTube Tutorial**: For the tutorial that guided the initial stages of setting up ultrasonic sensors with Arduino. [Watch the video](https://www.youtube.com/watch?v=gg08H-6Z1Lo).
+
 
